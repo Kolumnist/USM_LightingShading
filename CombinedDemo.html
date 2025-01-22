@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>WebGL Combined Demo</title>
+
+	<!-- Link CSS, JS, and WebGL -->
+	<script type="text/javascript" src="Common/webgl-utils.js"></script>
+	<script type="text/javascript" src="Common/initShaders.js"></script>
+	<script type="text/javascript" src="Common/MV.js"></script>
+	<script type="text/javascript" src="CombinedDemo.js"></script>
+	<script type="text/javascript" src="Geometry.js"></script>
+	<link rel="stylesheet" type="text/css" href="DemoCSS.css">
+
+	<!-- Define the vertex shader -->
+	<script id="vertex-shader" type="x-shader/x-vertex">
+		// Declare the global variable(s) for draw calls
+		uniform mat4 projectionMatrix;
+		uniform mat4 modelViewMatrix;
+		uniform mat3 normalMatrix;
+		uniform vec4 ambientProduct;
+		uniform vec4 diffuseProduct;
+		uniform vec4 specularProduct;
+		uniform vec4 lightPos;
+		uniform float shininess;
+		
+		// Declare the input variable(s) to receive per-vertex data from the application
+		attribute vec4 vPosition;
+		attribute vec4 vColor;
+		attribute vec3 vNormal;
+		
+		// Declare the varying variable(s) to pass data to the fragment shader
+		varying vec4 fColor;
+
+		void main()
+		{
+			vec3 pos = (modelViewMatrix * vPosition).xyz;
+			vec3 light = lightPos.xyz;
+			vec3 L;
+
+			// check for directional light
+			if(lightPos.w == 0.0)
+				L = normalize(lightPos.xyz);
+			else
+				L = normalize(lightPos.xyz - pos);
+
+			vec3 E = -normalize(pos);
+			vec3 H = normalize(L + E);
+
+			// Transform vertex normal into eye coordinates
+			vec3 N = normalize(normalMatrix * vNormal.xyz);
+
+			// Compute terms in the illumination equation
+			vec4 ambient = ambientProduct;
+
+			float Kd = max(dot(L, N), 0.0);
+			vec4 diffuse = Kd * diffuseProduct;
+
+			float Ks = pow(max(dot(N, H), 0.0), shininess);
+			vec4 specular = Ks * specularProduct;
+
+			if(dot(L, N) < 0.0)
+			{
+				specular = vec4(0.0, 0.0, 0.0, 1.0);
+			}
+
+			gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+			fColor = ambient + diffuse + specular;
+			fColor.a = 1.0;
+		}
+	</script>
+
+	<!-- Define the fragment shader -->
+	<script id="fragment-shader" type="x-shader/x-fragment">
+		precision mediump float;
+		varying vec4 fColor;
+
+		void main()
+		{
+			gl_FragColor = fColor;
+		}
+	</script>
+</head>
+
+<body>
+	<!-- Canvas for the graphic rendering -->
+	<div class="canvas">
+		<canvas id="gl-canvas" width="1280" height="720">
+			Error: your browser doesn't support the HTML5 canvas element
+		</canvas>
+	</div>
+
+	<!-- Panel for parameter customization -->
+	<div class="panel vertical-align">		
+
+		<!-- Sliders for light properties -->
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Ambient Lighting
+				<br>0.1<input class="slide" id="slider-ambient" type="range" min="0.1" max="1" step="0.1" value="0.5">1.0
+			</div>
+			<div class="textbox">
+				<p id="text-ambient">0.5</p>
+			</div>
+		</div>
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Diffuse Lighting
+				<br>0.1<input class="slide" id="slider-diffuse" type="range" min="0.1" max="1" step="0.1" value="0.5">1.0
+			</div>
+			<div class="textbox">
+				<p id="text-diffuse">0.5</p>
+			</div>
+		</div>
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Specular Lighting
+				<br>0.1<input class="slide" id="slider-specular" type="range" min="0.1" max="1" step="0.1" value="0.5">1.0
+			</div>
+			<div class="textbox">
+				<p id="text-specular">0.5</p>
+			</div>
+		</div>
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Shininess
+				<br>10<input class="slide" id="slider-shininess" type="range" min="10" max="100" step="10" value="60">100
+			</div>
+			<div class="textbox">
+				<p id="text-shininess">60</p>
+			</div>
+		</div>
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Light Position X
+				<br>-1<input class="slide" id="slider-light-x" type="range" min="-1" max="1" step="0.1" value="1">1
+			</div>
+			<div class="textbox">
+				<p id="text-light-x">1</p>
+			</div>
+		</div>
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Light Position Y
+				<br>-1<input class="slide" id="slider-light-y" type="range" min="-1" max="1" step="0.1" value="1">1
+			</div>
+			<div class="textbox">
+				<p id="text-light-y">1</p>
+			</div>
+		</div>
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Light Position Z
+				<br>-1<input class="slide" id="slider-light-z" type="range" min="-1" max="1" step="0.1" value="1">1
+			</div>
+			<div class="textbox">
+				<p id="text-light-z">1</p>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
