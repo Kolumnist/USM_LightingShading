@@ -48,7 +48,15 @@ var textLightX, textLightY, textLightZ;
 // Execute the init() function when the web page has fully loaded
 window.onload = function init()
 {
-    // Primitive (geometric shape) initialization
+    initObjects();
+    // WebGL setups
+    getUIElement();
+    configWebGL();
+    render();
+}
+
+function initObjects() 
+{
     cylinderObj = cylinder(72, 3, true);
     cylinderObj.Rotate(45, [1, 1, 0]);
     cylinderObj.Scale(1.2, 1.2, 1.2);
@@ -60,20 +68,15 @@ window.onload = function init()
     concatData(cubeObj.Point, cubeObj.Normal);
 
     sphereObj = sphere(5);
+    sphereObj.Scale(0.5, 0.5, 0.5);
     concatData(sphereObj.Point, sphereObj.Normal);
     
     cylinderV = (cylinderObj.Point).length;
     cubeV = (cubeObj.Point).length;
     sphereV = (sphereObj.Point).length;
 	totalV = pointsArray.length;
-
-    // WebGL setups
-    getUIElement();
-    configWebGL();
-    render();
 }
 
-// Retrieve all elements from HTML and store in the corresponding variables
 function getUIElement()
 {
     canvas = document.getElementById("gl-canvas");
@@ -146,7 +149,6 @@ function getUIElement()
     };
 }
 
-// Configure WebGL Settings
 function configWebGL()
 {
     // Initialize the WebGL context
@@ -222,11 +224,7 @@ function render()
 // Draw the first shape (cylinder)
 function drawCylinder()
 {
-    // Increment the rotation value if the animation is enabled
-    if(cylinderFlag)
-    {
-        cylinderTheta[cylinderAxis] += 1;
-    }
+    cylinderTheta[cylinderAxis] += 0.1;
 
     // Pass the model view matrix from JavaScript to the GPU for use in shader
     modelViewMatrix = mat4();
@@ -247,11 +245,7 @@ function drawCylinder()
 // Draw the second shape (cube)
 function drawCube()
 {
-    // Increment the rotation value if the animation is enabled
-    if(cubeFlag)
-    {
-        cubeTheta[cubeAxis] += 1;
-    }
+    cubeTheta[cubeAxis] += 0.1;
 
     // Pass the model view matrix from JavaScript to the GPU for use in shader
     modelViewMatrix = mat4();
@@ -272,11 +266,7 @@ function drawCube()
 // Draw the third shape (sphere)
 function drawSphere()
 {
-    // Increment the rotation value if the animation is enabled
-    if(sphereFlag)
-    {
-        sphereTheta[sphereAxis] += 1;
-    }
+    sphereTheta[sphereAxis] += 0.1;
 
     // Pass the model view matrix from JavaScript to the GPU for use in shader
     modelViewMatrix = mat4();
@@ -308,23 +298,7 @@ function recompute()
     pointsArray = [];
 	normalsArray = [];
     
-    cylinderObj = cylinder(72, 3, true);
-    cylinderObj.Rotate(45, [1, 1, 0]);
-    cylinderObj.Scale(1.2, 1.2, 1.2);
-    concatData(cylinderObj.Point, cylinderObj.Normal);
-
-    cubeObj = cube();
-    cubeObj.Rotate(45, [1, 1, 0]);
-    cubeObj.Scale(1, 1, 1);
-    concatData(cubeObj.Point, cubeObj.Normal);
-
-    sphereObj = sphere(5);
-    concatData(sphereObj.Point, sphereObj.Normal);
-    
-    cylinderV = (cylinderObj.Point).length;
-    cubeV = (cubeObj.Point).length;
-    sphereV = (sphereObj.Point).length;
-	totalV = pointsArray.length;
+    initObjects();
 
     configWebGL();
     render();
