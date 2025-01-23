@@ -58,7 +58,7 @@ window.onload = function init()
 function initObjects() 
 {
     cylinderObj = cylinder(72, 3, true);
-    cylinderObj.Rotate(45, [1, 1, 0]);
+    //cylinderObj.Rotate(45, [1, 1, 0]);
     cylinderObj.Scale(1.2, 1.2, 1.2);
     concatData(cylinderObj.Point, cylinderObj.Normal);
 
@@ -95,6 +95,9 @@ function getUIElement()
     textLightX = document.getElementById("text-light-x");
     textLightY = document.getElementById("text-light-y");
     textLightZ = document.getElementById("text-light-z");
+
+    canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("keydown", onKeyDown);
 
     sliderAmbient.onchange = function(event) 
 	{
@@ -219,19 +222,22 @@ function render()
     drawCylinder();
     drawCube();
     drawSphere();
+
+    requestAnimationFrame(render);
 }
 
 // Draw the first shape (cylinder)
 function drawCylinder()
 {
-    cylinderTheta[cylinderAxis] += 0.1;
+    //cylinderTheta[cylinderAxis] += 0.1;
 
     // Pass the model view matrix from JavaScript to the GPU for use in shader
     modelViewMatrix = mat4();
-    modelViewMatrix = mult(modelViewMatrix, translate(-1.5, 0, 0));
-    modelViewMatrix = mult(modelViewMatrix, rotate(cylinderTheta[X_AXIS], [1, 0, 0]));
-    modelViewMatrix = mult(modelViewMatrix, rotate(cylinderTheta[Y_AXIS], [0, 1, 0]));
-    modelViewMatrix = mult(modelViewMatrix, rotate(cylinderTheta[Z_AXIS], [0, 0, 1]));
+    modelViewMatrix = mult(modelViewMatrix, lookAt(eye, at , up));
+    modelViewMatrix = mult(modelViewMatrix, translate(0, 0, 0));
+    //modelViewMatrix = mult(modelViewMatrix, rotate(cylinderTheta[X_AXIS], [1, 0, 0]));
+    //modelViewMatrix = mult(modelViewMatrix, rotate(cylinderTheta[Y_AXIS], [0, 1, 0]));
+    //modelViewMatrix = mult(modelViewMatrix, rotate(cylinderTheta[Z_AXIS], [0, 0, 1]));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
     // Pass the normal matrix from JavaScript to the GPU for use in shader
@@ -245,43 +251,45 @@ function drawCylinder()
 // Draw the second shape (cube)
 function drawCube()
 {
-    cubeTheta[cubeAxis] += 0.1;
+    //cubeTheta[cubeAxis] += 0.1;
 
-    // Pass the model view matrix from JavaScript to the GPU for use in shader
+    /* Pass the model view matrix from JavaScript to the GPU for use in shader
     modelViewMatrix = mat4();
     modelViewMatrix = mult(modelViewMatrix, translate(1.5, 0, 0));
     modelViewMatrix = mult(modelViewMatrix, rotate(cubeTheta[X_AXIS], [1, 0, 0]));
     modelViewMatrix = mult(modelViewMatrix, rotate(cubeTheta[Y_AXIS], [0, 1, 0]));
     modelViewMatrix = mult(modelViewMatrix, rotate(cubeTheta[Z_AXIS], [0, 0, 1]));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+    */
 
     // Pass the normal matrix from JavaScript to the GPU for use in shader
     nMatrix = normalMatrix(modelViewMatrix);
     gl.uniformMatrix3fv(normalMatrixLoc, false, nMatrix);
 
     // Draw the primitive from the last index of shape 1 to the last index of shape 2
-    gl.drawArrays(gl.TRIANGLES, cylinderV, cubeV);
+    //gl.drawArrays(gl.TRIANGLES, cylinderV, cubeV);
 }
 
 // Draw the third shape (sphere)
 function drawSphere()
 {
-    sphereTheta[sphereAxis] += 0.1;
+    //sphereTheta[sphereAxis] += 0.1;
 
-    // Pass the model view matrix from JavaScript to the GPU for use in shader
+    /* Pass the model view matrix from JavaScript to the GPU for use in shader
     modelViewMatrix = mat4();
     modelViewMatrix = mult(modelViewMatrix, translate(0, 0, 0));
     modelViewMatrix = mult(modelViewMatrix, rotate(sphereTheta[X_AXIS], [1, 0, 0]));
     modelViewMatrix = mult(modelViewMatrix, rotate(sphereTheta[Y_AXIS], [0, 1, 0]));
     modelViewMatrix = mult(modelViewMatrix, rotate(sphereTheta[Z_AXIS], [0, 0, 1]));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+    */
 
     // Pass the normal matrix from JavaScript to the GPU for use in shader
     nMatrix = normalMatrix(modelViewMatrix);
     gl.uniformMatrix3fv(normalMatrixLoc, false, nMatrix);
 
     // Draw the primitive from the last index of shape 2 to the last index of shape 3
-    gl.drawArrays(gl.TRIANGLES, cylinderV + cubeV, sphereV);
+    //gl.drawArrays(gl.TRIANGLES, cylinderV + cubeV, sphereV);
 }
 
 // Concatenate the corresponding shape's values
@@ -302,4 +310,28 @@ function recompute()
 
     configWebGL();
     render();
+}
+
+function onMouseMove(event) {
+    const rect = canvas.getBoundingClientRect();
+    at[0] = event.clientX * 2 / rect.width*1.8 - 0.8;
+    at[1] = event.clientY * 2 / rect.height*1.8 - 0.8;
+    console.log(at);
+}
+
+function onKeyDown(event) {
+    switch (event.key) {
+        case 'ArrowUp':
+            eye[1] += 0.1;
+            break;
+        case 'ArrowDown':
+            eye[1] -= 0.1;
+            break;
+        case 'ArrowLeft':
+            eye[0] -= 0.1;
+            break;
+        case 'ArrowRight':
+            eye[0] += 0.1;
+            break;
+    }
 }
