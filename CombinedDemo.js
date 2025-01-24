@@ -31,7 +31,7 @@ var materialAmbient = vec4(0.5, 0.5, 1.0, 1.0);
 var materialDiffuse = vec4(0.0, 0.9, 1.0, 1.0);
 var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 
-var eye = vec3(1.0, 1.0, 1.0);
+var eye = vec3(0.0, 0.0, 1.0);
 var at = vec3(0.0, 0.0, 0.0);
 var up = vec3(0.0, 1.0, 0.0);
 
@@ -314,8 +314,8 @@ function recompute()
 
 function onMouseMove(event) {
     const rect = canvas.getBoundingClientRect();
-    at[0] = event.clientX * 2 / rect.width*1.8 - 0.8;
-    at[1] = event.clientY * 2 / rect.height*1.8 - 0.8;
+    at[0] = (event.clientX / rect.width) * 10 - 5;
+    at[1] = (event.clientY / rect.height) * 10 - 5;
     console.log(at);
 }
 
