@@ -224,7 +224,7 @@ function render()
     cameraPosition.innerHTML = 
         "Eye: " + eye[0].toFixed(2) + ", " + eye[1].toFixed(2) + " ..... " +
         "At: " + at[0].toFixed(2) + ", " + at[1].toFixed(2) + " ..... " +
-        "Up: " + up[0].toFixed(2) + ", " + up[1].toFixed(2) + ", " + up[2].toFixed(2);
+        "Up: " + up[0].toFixed(2);
     requestAnimationFrame(render);
 }
 
@@ -339,6 +339,14 @@ function onKeyDown(event) {
         case "ArrowRight":
             eye[0] -= 0.1;
             if (eye[0] < eyeMin) eye[0] = eyeMin;
+            break;
+        case "d":
+            up[0] += 0.01;
+            if (up[0] > 1) up[0] = 1;
+            break;
+        case "a":
+            up[0] -= 0.01;
+            if (up[0] < -1) up[0] = -1;
             break;
         default: break;
     }
