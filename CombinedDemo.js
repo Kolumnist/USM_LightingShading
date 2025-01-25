@@ -1,7 +1,3 @@
-/*-----------------------------------------------------------------------------------*/
-// Variable Declaration
-/*-----------------------------------------------------------------------------------*/
-
 // Common variables
 var canvas, gl, program;
 var pBuffer, nBuffer, vPosition, vNormal;
@@ -36,6 +32,7 @@ var at = vec3(0.0, 0.0, 0.0);
 var up = vec3(0.0, 1.0, 0.0);
 
 // Variables referencing HTML elements for light and material properties
+var cameraPosition;
 var sliderAmbient, sliderDiffuse, sliderSpecular, sliderShininess;
 var sliderLightX, sliderLightY, sliderLightZ;
 var textAmbient, textDiffuse, textSpecular, textShininess;
@@ -58,7 +55,7 @@ window.onload = function init()
 function initObjects() 
 {
     cylinderObj = cylinder(72, 3, true);
-    //cylinderObj.Rotate(45, [1, 1, 0]);
+    cylinderObj.Rotate(45, [1, 1, 0]);
     cylinderObj.Scale(1.2, 1.2, 1.2);
     concatData(cylinderObj.Point, cylinderObj.Normal);
 
@@ -80,6 +77,7 @@ function initObjects()
 function getUIElement()
 {
     canvas = document.getElementById("gl-canvas");
+    cameraPosition = document.getElementById("camera-position");
 
     sliderAmbient = document.getElementById("slider-ambient");
     sliderDiffuse = document.getElementById("slider-diffuse");
@@ -206,7 +204,7 @@ function render()
 
     // Pass the projection matrix from JavaScript to the GPU for use in shader
     // ortho(left, right, bottom, top, near, far)
-    projectionMatrix = ortho(-4, 4, -2.25, 2.25, -5, 5);
+    projectionMatrix = ortho(-4, 4, -2.25, 2.25, -10, 10);
     gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
     // Compute the ambient, diffuse, and specular values
@@ -223,6 +221,10 @@ function render()
     drawCube();
     drawSphere();
 
+    cameraPosition.innerHTML = 
+        "Eye: " + eye[0].toFixed(2) + ", " + eye[1].toFixed(2) + " ..... " +
+        "At: " + at[0].toFixed(2) + ", " + at[1].toFixed(2) + " ..... " +
+        "Up: " + up[0].toFixed(2) + ", " + up[1].toFixed(2) + ", " + up[2].toFixed(2);
     requestAnimationFrame(render);
 }
 
@@ -240,11 +242,9 @@ function drawCylinder()
     //modelViewMatrix = mult(modelViewMatrix, rotate(cylinderTheta[Z_AXIS], [0, 0, 1]));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
-    // Pass the normal matrix from JavaScript to the GPU for use in shader
     nMatrix = normalMatrix(modelViewMatrix);
     gl.uniformMatrix3fv(normalMatrixLoc, false, nMatrix);
 
-    // Draw the primitive from index 0 to the last index of shape 1
     gl.drawArrays(gl.TRIANGLES, 0, cylinderV);
 }
 
@@ -316,29 +316,29 @@ function onMouseMove(event) {
     const rect = canvas.getBoundingClientRect();
     at[0] = (event.clientX / rect.width) * 10 - 5;
     at[1] = (event.clientY / rect.height) * 10 - 5;
-    console.log(at[0]);
+    console.log(at);
 }
 
 function onKeyDown(event) {
-    const maximum = 5;
-    const minimum = -5;
+    const eyeMax = 5;
+    const eyeMin = -5;
 
     switch (event.key) {
-        case 'ArrowUp':
+        case "ArrowUp":
             eye[1] += 0.1;
-            if (eye[1] > maximum) eye[1] = maximum;
+            if (eye[1] > eyeMax) eye[1] = eyeMax;
             break;
-        case 'ArrowDown':
+        case "ArrowDown":
             eye[1] -= 0.1;
-            if (eye[1] < minimum) eye[1] = minimum;
+            if (eye[1] < eyeMin) eye[1] = eyeMin;
             break;
-        case 'ArrowLeft':
-            eye[0] -= 0.1;
-            if (eye[0] < minimum) eye[0] = minimum;
-            break;
-        case 'ArrowRight':
+        case "ArrowLeft":
             eye[0] += 0.1;
-            if (eye[0] > maximum) eye[0] = maximum;
+            if (eye[0] > eyeMax) eye[0] = eyeMax;
+            break;
+        case "ArrowRight":
+            eye[0] -= 0.1;
+            if (eye[0] < eyeMin) eye[0] = eyeMin;
             break;
         default: break;
     }
