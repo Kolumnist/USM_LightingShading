@@ -9,6 +9,8 @@ const X_AXIS = 0;
 const Y_AXIS = 1;
 const Z_AXIS = 2;
 var dropdownSelect; // Dropdown for object selection
+// New Robot Object
+var robotObj;
 var cylinderX, cylinderY, cylinderZ, cylinderAxis = X_AXIS, cylinderBtn;
 var cubeX, cubeY, cubeZ, cubeAxis = X_AXIS, cubeBtn;
 var sphereX, sphereY, sphereZ, sphereAxis = X_AXIS, sphereBtn;
@@ -64,9 +66,13 @@ function initObjects() {
     cubeObj.Scale(0.8, 1.5, 1);
     concatData(cubeObj.Point, cubeObj.Normal);
 
+    robotObj = robot();
+    concatData(robotObj.Point, robotObj.Normal);
+
     cylinderV = (cylinderObj.Point).length;
     cubeV = (cubeObj.Point).length;
     sphereV = (sphereObj.Point).length;
+    robotV = (robotObj.Point).length; // Added for Robot
     totalV = pointsArray.length;
 }
 
@@ -95,6 +101,7 @@ function getUIElement() {
 
     dropdownSelect.onchange = function (event) {
         selectedObject = event.target.value;
+        console.log("Selected Object: ", selectedObject);
         recompute();
     };
 
@@ -214,6 +221,8 @@ function render() {
         drawSphere();
     } else if (selectedObject === "cube") {
         drawCube();
+    } else if (selectedObject === "robot") {
+        drawRobot();
     }
 
     cameraPosition.innerHTML =
@@ -255,6 +264,18 @@ function drawCube() {
     gl.uniformMatrix3fv(normalMatrixLoc, false, nMatrix);
 
     gl.drawArrays(gl.TRIANGLES, cylinderV + sphereV, cubeV);
+}
+
+function drawRobot() {
+    modelViewMatrix = mat4();
+    modelViewMatrix = mult(modelViewMatrix, lookAt(eye, at, up));
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+
+    nMatrix = normalMatrix(modelViewMatrix);
+    gl.uniformMatrix3fv(normalMatrixLoc, false, nMatrix);
+
+    gl.drawArrays(gl.TRIANGLES, cylinderV + sphereV + cubeV, robotV);
+
 }
 
 // Concatenate the corresponding shape's values
@@ -315,8 +336,7 @@ function onKeyDown(event) {
     }
 }
 
-function toggleLight() 
-{
+function toggleLight() {
     isLightOn = !isLightOn;
     recompute();
 }
