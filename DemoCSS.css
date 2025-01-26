@@ -1,13 +1,6 @@
 body {
-	width: 100vw;
-	height: 100vh;
-	padding: 0;
 	margin: 0;
-	text-decoration: none;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
+	padding: 0;
 }
 
 .canvas {
@@ -30,18 +23,61 @@ body {
 }
 
 .panel {
-	margin-left: 10px;
-	width: 400px;
-	height: 720px;
-	border: 10px solid #4a4e69;
-	border-radius: 10px;
-	background-color: #022639;
+    background: linear-gradient(135deg, #3498db, #2ecc71); /* Blue to green gradient */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+}
+.param-panel {
+	margin-bottom: 15px;
+}
+
+label {
+	font-size: 14px;
+	color: #333;
+}
+
+.slide {
+	width: 100%;
+	cursor: pointer;
+}
+
+.slider-value {
+	font-size: 1rem;
+	color: #555;
+	text-align: center;
+}
+
+.btn-toggle {
+	width: 100%;
+	padding: 10px;
+	background: #3498db;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background 0.3s ease;
+}
+
+.btn-toggle:hover {
+	background: #2980b9;
+}
+
+.form-control {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
 }
 
 .param-panel label {
 	font-weight: bold;
 	font-size: large;
-	color: #ffffff;
+	color: #100f0f;
 	margin-bottom: 5px;
 }
 
@@ -183,3 +219,114 @@ body {
 .param-panel select:hover {
 	background-color: #004a75;
 }
+
+/* Container to align the two navbars */
+.navbar-left{
+	margin-top: 0.5rem;
+	margin-left: 1rem;
+    position: fixed;
+    top: 0;
+    width: 20%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    background-color: #b9e614;
+ 
+    border-radius: 10px;
+}
+.navbar-right{
+	margin-top: 1rem;
+	margin-right: 10rem;
+	position: fixed;
+    top: 0;
+    width: 60%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    background-color: #c3e614;
+    border-radius: 10px;
+
+}
+
+/* Positioning navbar on the left */
+.navbar-left {
+    left: 0;
+}
+
+/* Positioning navbar on the right */
+.navbar-right {
+    right: 0;
+}
+
+/* Navbar item styles */
+.navbar-nav {
+    display: flex;
+    justify-content: space-evenly; /* Spread out items */
+    width: 100%;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+    padding: 10px 15px;
+}
+
+/* Custom control item styling for camera controls */
+.control-item {
+    display: flex;
+    align-items: center;
+    margin-right: 15px; /* Spacing between items */
+    color: white; /* Adjust color to match navbar text */
+}
+
+.icon {
+    margin-right: 5px; /* Space between icon and label */
+}
+
+.label {
+    font-size: 14px;
+}
+
+
+        .content {
+            margin-top: 70px; /* Adds space below the navbar to avoid overlapping */
+        }
+.canvas1{
+	display: flex;
+	margin-top: 5rem;
+
+}
+/* Adjust font size for navbar text */
+.navbar-nav .nav-link {
+    font-size: 18px; /* Increase this value as needed */
+}
+
+/* Adjust font size for the "Select Object" label */
+.navbar-nav .nav-item label {
+    font-size: 18px; /* Same font size for label */
+}
+
+/* Adjust font size for the select dropdown */
+.navbar-nav .form-control {
+    font-size: 18px; /* Same font size for select dropdown */
+}
+
+/* Increase font size for labels and icons */
+.control-item .label {
+	font-size: 18px; /* Adjust as needed */
+	color: #2c3e50;
+}
+
+.control-item .icon {
+	font-size: 20px; /* Adjust as needed */
+}
+
+/* Optional: Add spacing between items */
+.control-item {
+	display: flex;
+	align-items: center;
+	gap: 10px; /* Adds space between icon and label */
+}
+
+/* Optional: Ensure the navbar items are vertically centered */
+.navbar-nav {
+	align-items: center;}
