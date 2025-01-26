@@ -4,6 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>WebGL LightingShading</title>
+	<meta name="description" content="An interactive 3D graphics program for lighting effects simulation and material appearance. Allows users to create aesthetically beautiful and visually realistic scenes by interactively setting light sources, materials, and viewpoints.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 
 	<!-- Link CSS, JS, and WebGL -->
 	<script type="text/javascript" src="Common/webgl-utils.js"></script>
@@ -82,10 +85,80 @@
 			gl_FragColor = fColor;
 		}
 	</script>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
 </head>
 
 <body>
+	<div class="navbar-left">
+		<nav class="navbar navbar-expand-lg navbar-light ">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse" id="navbarLeft">
+					<ul class="navbar-nav mx-auto d-flex align-items-center"> <!-- Centering the links -->
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Select <span class="sr-only">(current)</span></a>
+						</li>
+
+						<!-- "Select Object" label and dropdown side by side -->
+						<li class="nav-item d-flex align-items-center">
+							<label for="object-select" class="mr-2 mb-0">Object:</label>
+							<select id="object-select" class="form-control">
+								<option value="cylinder" selected>Cylinder</option>
+								<option value="sphere">Sphere</option>
+								<option value="cube">Cube</option>
+								<option value="robot">Robot</option>
+							</select>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div class="navbar-right">
+		<nav class="navbar navbar-expand-lg navbar-light">
+			<div class="collapse navbar-collapse" id="navbarRight">
+				<ul class="navbar-nav mx-auto"> <!-- Centering the camera control items -->
+					<li class="nav-item">
+						<span class="control-item">
+							<span class="label">Camera Controls</span>
+							<span class="icon">⬆️⬇️⬅️➡️</span>
+							<span class="label">Arrow Keys - Move Eye</span>
+						</span>
+					</li>
+					<li class="nav-item">
+						<span class="control-item">
+							<span class="icon">🖱️</span>
+							<span class="label">Mouse - Look At</span>
+						</span>
+					</li>
+					<li class="nav-item">
+						<span class="control-item">
+							<span class="icon">A / D</span>
+							<span class="label">Up</span>
+						</span>
+					</li>
+					<li class="nav-item">
+						<span class="control-item">
+							<span class="icon">S</span>
+							<span class="label">Toggle Shading</span>
+						</span>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	
+	
+	
+
 	<!-- Canvas for the graphic rendering -->
+	<div class="canvas1">
 	<div class="canvas">
 		<canvas id="gl-canvas" width="1280" height="720">
 			Error: your browser doesn't support the HTML5 canvas element
@@ -94,102 +167,77 @@
 		</div>
 	</div>
 
+
 	<!-- Panel for parameter customization -->
-	<div class="panel vertical-align">
+	<div class="panel">
 		<!-- Dropdown menu to select different objects -->
-		<div class="param-panel horizontal-align">
-			<label for="object-select">Select Object:</label>
-			<select id="object-select">
-				<option value="cylinder" selected>Cylinder</option>
-				<option value="sphere">Sphere</option>
-				<option value="cube">Cube</option>
-				<option value="robot">Robot</option>
-			</select>
-		</div>
 
-
-		<!-- Sliders for light properties -->
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Camera Controls:<br>
-				Arrow Keys - Eye <br>
-				Mouse - Look At <br>
-				A, D - Up <br>
-				<br>
-				S - Toggle Shading <br>
+	
+		<!-- Sliders for lighting controls -->
+		<div class="param-panel">
+			<div class="slider-container">
+				<label for="slider-ambient">Ambient Lighting:</label>
+				<input class="slide" id="slider-ambient" type="range" min="0.1" max="1" step="0.1" value="0.5">
+				<span class="slider-value" id="text-ambient">0.5</span>
 			</div>
 		</div>
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Ambient Lighting
-				<br>0.1<input class="slide" id="slider-ambient" type="range" min="0.1" max="1" step="0.1"
-					value="0.5">1.0
-			</div>
-			<div class="textbox">
-				<p id="text-ambient">0.5</p>
+	
+		<div class="param-panel">
+			<div class="slider-container">
+				<label for="slider-diffuse">Diffuse Lighting:</label>
+				<input class="slide" id="slider-diffuse" type="range" min="0.1" max="1" step="0.1" value="0.5">
+				<span class="slider-value" id="text-diffuse">0.5</span>
 			</div>
 		</div>
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Diffuse Lighting
-				<br>0.1<input class="slide" id="slider-diffuse" type="range" min="0.1" max="1" step="0.1"
-					value="0.5">1.0
-			</div>
-			<div class="textbox">
-				<p id="text-diffuse">0.5</p>
+	
+		<div class="param-panel">
+			<div class="slider-container">
+				<label for="slider-specular">Specular Lighting:</label>
+				<input class="slide" id="slider-specular" type="range" min="0.1" max="1" step="0.1" value="0.5">
+				<span class="slider-value" id="text-specular">0.5</span>
 			</div>
 		</div>
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Specular Lighting
-				<br>0.1<input class="slide" id="slider-specular" type="range" min="0.1" max="1" step="0.1"
-					value="0.5">1.0
-			</div>
-			<div class="textbox">
-				<p id="text-specular">0.5</p>
+	
+		<div class="param-panel">
+			<div class="slider-container">
+				<label for="slider-shininess">Shininess:</label>
+				<input class="slide" id="slider-shininess" type="range" min="10" max="100" step="10" value="60">
+				<span class="slider-value" id="text-shininess">60</span>
 			</div>
 		</div>
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Shininess
-				<br>10<input class="slide" id="slider-shininess" type="range" min="10" max="100" step="10"
-					value="60">100
-			</div>
-			<div class="textbox">
-				<p id="text-shininess">60</p>
+	
+		<div class="param-panel">
+			<div class="slider-container">
+				<label for="slider-light-x">Light Position X:</label>
+				<input class="slide" id="slider-light-x" type="range" min="-1" max="1" step="0.1" value="1">
+				<span class="slider-value" id="text-light-x">1</span>
 			</div>
 		</div>
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Light Position X
-				<br>-1<input class="slide" id="slider-light-x" type="range" min="-1" max="1" step="0.1" value="1">1
-			</div>
-			<div class="textbox">
-				<p id="text-light-x">1</p>
-			</div>
-		</div>
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Light Position Y
-				<br>-1<input class="slide" id="slider-light-y" type="range" min="-1" max="1" step="0.1" value="1">1
-			</div>
-			<div class="textbox">
-				<p id="text-light-y">1</p>
+	
+		<div class="param-panel">
+			<div class="slider-container">
+				<label for="slider-light-y">Light Position Y:</label>
+				<input class="slide" id="slider-light-y" type="range" min="-1" max="1" step="0.1" value="1">
+				<span class="slider-value" id="text-light-y">1</span>
 			</div>
 		</div>
-		<div class="param-panel horizontal-align">
-			<div class="slider">
-				Light Position Z
-				<br>-1<input class="slide" id="slider-light-z" type="range" min="-1" max="1" step="0.1" value="1">1
-			</div>
-			<div class="textbox">
-				<p id="text-light-z">1</p>
+	
+		<div class="param-panel">
+			<div class="slider-container">
+				<label for="slider-light-z">Light Position Z:</label>
+				<input class="slide" id="slider-light-z" type="range" min="-1" max="1" step="0.1" value="1">
+				<span class="slider-value" id="text-light-z">1</span>
 			</div>
 		</div>
-		<div class="param-panel horizontal-align">
-			<input type="button" onclick="toggleLight()" id="lightswitch" value="Lightswitch">
+	
+		<!-- Lightswitch button -->
+		<div class="param-panel">
+			<button class="btn-toggle" onclick="toggleLight()" id="lightswitch">Toggle Light</button>
 		</div>
 	</div>
+	
+</div>
+
 </body>
 
 </html>
