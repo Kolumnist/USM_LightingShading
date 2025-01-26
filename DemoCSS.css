@@ -1,40 +1,35 @@
-body
-{
+body {
 	width: 100vw;
 	height: 100vh;
 	padding: 0;
 	margin: 0;
 	text-decoration: none;
-    display: flex;
+	display: flex;
 	flex-direction: row;
-    align-items: center;
-    justify-content: center;
+	align-items: center;
+	justify-content: center;
 }
 
-.canvas
-{
+.canvas {
 	border: 10px solid #4a4e69;
 	border-radius: 10px;
 }
 
-.horizontal-align
-{
+.horizontal-align {
 	display: flex;
 	flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.vertical-align
-{
+.vertical-align {
 	display: flex;
 	flex-direction: column;
-    align-items: center;
-    justify-content: center;
+	align-items: center;
+	justify-content: center;
 }
 
-.panel
-{
+.panel {
 	margin-left: 10px;
 	width: 400px;
 	height: 720px;
@@ -43,33 +38,30 @@ body
 	background-color: #022639;
 }
 
-.param-panel
-{
-	width: 270px;
-	margin: 5px 0 5px 0;
+.param-panel label {
+	font-weight: bold;
+	font-size: large;
+	color: #ffffff;
+	margin-bottom: 5px;
 }
 
-.mg-top-bottom
-{
+.mg-top-bottom {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
-.slider
-{
+.slider {
 	font-weight: bold;
 	font-size: large;
 	color: #ffffff;
 }
 
-.slider .slide
-{
+.slider .slide {
 	width: 120px;
 	padding-top: 10px;
 }
 
-.checkText
-{
+.checkText {
 	width: 150px;
 	height: 20px;
 	font-weight: bold;
@@ -77,15 +69,13 @@ body
 	color: #ffffff;
 }
 
-.checkRadio
-{
+.checkRadio {
 	width: 20px;
 	height: 20px;
 	margin-right: 22px;
 }
 
-.textbox
-{
+.textbox {
 	margin-left: 15px;
 	width: 55px;
 	height: 55px;
@@ -94,8 +84,7 @@ body
 	border-radius: 10px;
 }
 
-.textbox2
-{
+.textbox2 {
 	margin-left: 15px;
 	width: 55px;
 	height: 40px;
@@ -104,8 +93,7 @@ body
 	border-radius: 10px;
 }
 
-.textbox p
-{
+.textbox p {
 	position: relative;
 	color: #ffffff;
 	text-align: center;
@@ -114,8 +102,7 @@ body
 	line-height: 0.25;
 }
 
-.textbox2 p
-{
+.textbox2 p {
 	position: relative;
 	color: #ffffff;
 	text-align: center;
@@ -124,8 +111,7 @@ body
 	line-height: 0.1;
 }
 
-.anim-btn
-{
+.anim-btn {
 	margin: 15px 0px 5px 0px;
 	width: 270px;
 	height: 70px;
@@ -136,31 +122,64 @@ body
 	text-align: center;
 	font-weight: bold;
 	font-size: 24px;
-	outline : none;
+	outline: none;
 }
 
-.anim-btn:hover
-{
+.anim-btn:hover {
 	animation: bounce 1s;
 }
 
-.anim-btn:active
-{
-  background-color 	: #21ff94;
-  box-shadow 		: 0 2px #666666;
-  transform 		: translateY(2px);
+.anim-btn:active {
+	background-color: #21ff94;
+	box-shadow: 0 2px #666666;
+	transform: translateY(2px);
 }
 
-.anim-btn:disabled
-{
-    animation: none;
+.anim-btn:disabled {
+	animation: none;
 	pointer-events: none;
 	opacity: 0.5;
 }
 
-@keyframes bounce 
-{
-	0%, 20%, 60%, 100%	{transform: translateY(0);}
-	40% 				{transform: translateY(-10px);}
-	80% 				{transform: translateY(-5px);}
+@keyframes bounce {
+
+	0%,
+	20%,
+	60%,
+	100% {
+		transform: translateY(0);
+	}
+
+	40% {
+		transform: translateY(-10px);
+	}
+
+	80% {
+		transform: translateY(-5px);
+	}
+}
+
+/* Dropdown menu styling */
+.param-panel select {
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+	font-size: 14px;
+	border-radius: 5px;
+	border: none;
+	outline: none;
+	background-color: #0077b6;
+	color: #ffffff;
+	font-weight: bold;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+	text-align: center;
+}
+
+.param-panel select:focus {
+	border: 2px solid #00b4d8;
+	outline: none;
+}
+
+.param-panel select:hover {
+	background-color: #004a75;
 }

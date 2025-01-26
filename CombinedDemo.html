@@ -95,7 +95,17 @@
 	</div>
 
 	<!-- Panel for parameter customization -->
-	<div class="panel vertical-align">		
+	<div class="panel vertical-align">
+		<!-- Dropdown menu to select different objects -->
+		<div class="param-panel horizontal-align">
+			<label for="object-select">Select Object:</label>
+			<select id="object-select">
+				<option value="cylinder" selected>Cylinder</option>
+				<option value="sphere">Sphere</option>
+				<option value="cube">Cube</option>
+			</select>
+		</div>
+
 
 		<!-- Sliders for light properties -->
 		<div class="param-panel horizontal-align">
@@ -111,7 +121,8 @@
 		<div class="param-panel horizontal-align">
 			<div class="slider">
 				Ambient Lighting
-				<br>0.1<input class="slide" id="slider-ambient" type="range" min="0.1" max="1" step="0.1" value="0.5">1.0
+				<br>0.1<input class="slide" id="slider-ambient" type="range" min="0.1" max="1" step="0.1"
+					value="0.5">1.0
 			</div>
 			<div class="textbox">
 				<p id="text-ambient">0.5</p>
@@ -120,7 +131,8 @@
 		<div class="param-panel horizontal-align">
 			<div class="slider">
 				Diffuse Lighting
-				<br>0.1<input class="slide" id="slider-diffuse" type="range" min="0.1" max="1" step="0.1" value="0.5">1.0
+				<br>0.1<input class="slide" id="slider-diffuse" type="range" min="0.1" max="1" step="0.1"
+					value="0.5">1.0
 			</div>
 			<div class="textbox">
 				<p id="text-diffuse">0.5</p>
@@ -129,7 +141,8 @@
 		<div class="param-panel horizontal-align">
 			<div class="slider">
 				Specular Lighting
-				<br>0.1<input class="slide" id="slider-specular" type="range" min="0.1" max="1" step="0.1" value="0.5">1.0
+				<br>0.1<input class="slide" id="slider-specular" type="range" min="0.1" max="1" step="0.1"
+					value="0.5">1.0
 			</div>
 			<div class="textbox">
 				<p id="text-specular">0.5</p>
@@ -138,7 +151,8 @@
 		<div class="param-panel horizontal-align">
 			<div class="slider">
 				Shininess
-				<br>10<input class="slide" id="slider-shininess" type="range" min="10" max="100" step="10" value="60">100
+				<br>10<input class="slide" id="slider-shininess" type="range" min="10" max="100" step="10"
+					value="60">100
 			</div>
 			<div class="textbox">
 				<p id="text-shininess">60</p>
