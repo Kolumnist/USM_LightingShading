@@ -40,6 +40,7 @@ var textAmbient, textDiffuse, textSpecular, textShininess;
 var textLightX, textLightY, textLightZ;
 
 var isSmooth = true;
+var isLightOn = true;
 
 // Execute the init() function when the web page has fully loaded
 window.onload = function init() {
@@ -198,11 +199,13 @@ function render() {
         specularProduct = mult(lightSpecular, materialSpecular);
     }
 
-    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
-    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
-    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
-    gl.uniform4fv(gl.getUniformLocation(program, "lightPos"), flatten(lightPos));
-    gl.uniform1f(gl.getUniformLocation(program, "shininess"), shininess);
+    if (isLightOn) {
+        gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
+        gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
+        gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
+        gl.uniform4fv(gl.getUniformLocation(program, "lightPos"), flatten(lightPos));
+        gl.uniform1f(gl.getUniformLocation(program, "shininess"), shininess);
+    }
 
     // Render objects based on user selection
     if (selectedObject === "cylinder") {
@@ -310,4 +313,10 @@ function onKeyDown(event) {
             break;
         default: break;
     }
+}
+
+function toggleLight() 
+{
+    isLightOn = !isLightOn;
+    recompute();
 }
