@@ -24,6 +24,7 @@
 		uniform vec4 specularProduct;
 		uniform vec4 lightPos;
 		uniform float shininess;
+		uniform bool flatShading;
 		
 		// Declare the input variable(s) to receive per-vertex data from the application
 		attribute vec4 vPosition;
@@ -97,6 +98,16 @@
 	<div class="panel vertical-align">		
 
 		<!-- Sliders for light properties -->
+		<div class="param-panel horizontal-align">
+			<div class="slider">
+				Camera Controls:<br>
+				Arrow Keys - Eye <br>
+				Mouse - Look At <br>
+				A, D - Up <br>
+				<br>
+				S - Toggle Shading <br>
+			</div>
+		</div>
 		<div class="param-panel horizontal-align">
 			<div class="slider">
 				Ambient Lighting

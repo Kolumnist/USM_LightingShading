@@ -38,6 +38,8 @@ var sliderLightX, sliderLightY, sliderLightZ;
 var textAmbient, textDiffuse, textSpecular, textShininess;
 var textLightX, textLightY, textLightZ;
 
+var isSmooth = true;
+
 /*-----------------------------------------------------------------------------------*/
 // WebGL Utilities
 /*-----------------------------------------------------------------------------------*/
@@ -210,7 +212,12 @@ function render()
     // Compute the ambient, diffuse, and specular values
     ambientProduct = mult(lightAmbient, materialAmbient);
     diffuseProduct = mult(lightDiffuse, materialDiffuse);
-    specularProduct = mult(lightSpecular, materialSpecular);
+    specularProduct = vec4(0.0, 0.0, 0.0, 1.0);
+    if (isSmooth)
+    {
+        specularProduct = mult(lightSpecular, materialSpecular);
+    }
+
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
     gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
     gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
@@ -347,6 +354,9 @@ function onKeyDown(event) {
         case "a":
             up[0] -= 0.01;
             if (up[0] < -1) up[0] = -1;
+            break;
+        case "s":
+            isSmooth = !isSmooth;
             break;
         default: break;
     }
